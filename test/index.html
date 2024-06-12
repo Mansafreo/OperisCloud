@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Reports</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<style>
+    body {
+    background-color: #2e2e2e;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    text-align: center;
+}
+
+.chart-container {
+    margin: 20px auto;
+    width: 100%;
+    max-width: 600px;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+</style>
+<body>
+    <div class="container">
+        <h1>User Reports</h1>
+        <div class="chart-container">
+            <canvas id="tasksCompletedChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="projectsCompletedChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="outstandingTasksProjectsChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="notesCreatedChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="averageBooksPerSubjectChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="averageTaskCompletionTimeChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="averageItemsInProjectChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="booksPerSubjectChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="tasksPerProjectChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="tasksPerMonthChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="eventsPerMonthChart"></canvas>
+        </div>
+    </div>
+    <script src="scripts.js"></script>
+</body>
+<script>
+// Sample data
+const sampleData = {
+    tasksCompleted: 35,
+    projectsCompleted: 5,
+    outstandingTasks: 10,
+    outstandingProjects: 2,
+    notesCreated: 20,
+    averageBooksPerSubject: 3.5,
+    averageTaskCompletionTime: 4.2, // days
+    averageItemsInProject: 7,
+    booksPerSubject: [5, 3, 8, 2], // Example data
+    tasksPerProject: [10, 15, 5, 20], // Example data
+    tasksPerMonth: [12, 15, 9, 11, 13, 8, 7, 10, 14, 6, 5, 9], // Example data
+    eventsPerMonth: [3, 4, 2, 5, 1, 6, 2, 3, 4, 3, 2, 1] // Example data
+};
+
+const subjects = ["Math", "Science", "History", "Art"]; // Example subjects
+const projects = ["Project A", "Project B", "Project C", "Project D"]; // Example projects
+const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]; // Months
+
+// Create charts
+const ctxTasksCompleted = document.getElementById('tasksCompletedChart').getContext('2d');
+const ctxProjectsCompleted = document.getElementById('projectsCompletedChart').getContext('2d');
+const ctxOutstandingTasksProjects = document.getElementById('outstandingTasksProjectsChart').getContext('2d');
+const ctxNotesCreated = document.getElementById('notesCreatedChart').getContext('2d');
+const ctxAverageBooksPerSubject = document.getElementById('averageBooksPerSubjectChart').getContext('2d');
+const ctxAverageTaskCompletionTime = document.getElementById('averageTaskCompletionTimeChart').getContext('2d');
+const ctxAverageItemsInProject = document.getElementById('averageItemsInProjectChart').getContext('2d');
+const ctxBooksPerSubject = document.getElementById('booksPerSubjectChart').getContext('2d');
+const ctxTasksPerProject = document.getElementById('tasksPerProjectChart').getContext('2d');
+const ctxTasksPerMonth = document.getElementById('tasksPerMonthChart').getContext('2d');
+const ctxEventsPerMonth = document.getElementById('eventsPerMonthChart').getContext('2d');
+
+// Tasks Completed Chart
+new Chart(ctxTasksCompleted, {
+    type: 'bar',
+    data: {
+        labels: ['Tasks Completed'],
+        datasets: [{
+            label: 'Tasks Completed',
+            data: [sampleData.tasksCompleted],
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+// Projects Completed Chart
+new Chart(ctxProjectsCompleted, {
+    type: 'bar',
+    data: {
+        labels: ['Projects Completed'],
+        datasets: [{
+            label: 'Projects Completed',
+            data: [sampleData.projectsCompleted],
+            backgroundColor: 'rgba(153, 102, 255, 0.2)',
+            borderColor: 'rgba(153, 102, 255, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+// Outstanding Tasks/Projects Chart
+new Chart(ctxOutstandingTasksProjects, {
+    type: 'bar',
+    data: {
+        labels: ['Outstanding Tasks', 'Outstanding Projects'],
+        datasets: [{
+            label: 'Outstanding Items',
+            data: [sampleData.outstandingTasks, sampleData.outstandingProjects],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 206, 86, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(255, 206, 86, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+// Notes Created Chart
+new Chart(ctxNotesCreated, {
+    type: 'bar',
+    data: {
+        labels: ['Notes Created'],
+        datasets: [{
+            label: 'Notes Created',
+            data: [sampleData.notesCreated],
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+// Average Books per Subject Chart
+new Chart(ctxAverageBooksPerSubject, {
+    type: 'bar',
+    data: {
+        labels: ['Average Books per Subject'],
+        datasets: [{
+            label: 'Average Books per Subject',
+            data: [sampleData.averageBooksPerSubject],
+            backgroundColor: 'rgba(255, 159, 64, 0.2)',
+            borderColor: 'rgba(255, 159, 64, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+// Average Task Completion Time Chart
+new Chart(ctxAverageTaskCompletionTime, {
+    type: 'bar',
+    data: {
+        labels: ['Average Task Completion Time (days)'],
+        datasets: [{
+            label: 'Average Task Completion Time',
+            data: [sampleData.averageTaskCompletionTime],
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+// Average Items in Project Chart
+new Chart(ctxAverageItemsInProject, {
+    type: 'bar',
+    data: {
+        labels: ['Average Items in Project'],
+        datasets: [{
+            label: 'Average Items in Project',
+            data: [sampleData.averageItemsInProject],
+            backgroundColor: 'rgba(153, 102, 255, 0.2)',
+            borderColor: 'rgba(153, 102, 255, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+// Books per Subject Chart
+new Chart(ctxBooksPerSubject, {
+    type: 'bar',
+    data: {
+        labels: subjects,
+        datasets: [{
+            label: 'Books per Subject',
+            data: sampleData.booksPerSubject,
+            backgroundColor: 'rgba(255, 206, 86, 0.2)',
+            borderColor: 'rgba(255, 206, 86, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+// Tasks per Project Chart
+new Chart(ctxTasksPerProject, {
+    type: 'bar',
+    data: {
+        labels: projects,
+        datasets: [{
+            label: 'Tasks per Project',
+            data: sampleData.tasksPerProject,
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+// Tasks per Month Chart
+new Chart(ctxTasksPerMonth, {
+    type: 'line',
+    data: {
+        labels: months,
+        datasets: [{
+            label: 'Tasks per Month',
+            data: sampleData.tasksPerMonth,
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1,
+            fill: true
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+// Events per Month Chart
+new Chart(ctxEventsPerMonth, {
+    type: 'line',
+    data: {
+        labels: months,
+        datasets: [{
+            label: 'Events per Month',
+            data: sampleData.eventsPerMonth,
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 1,
+            fill: true
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+
+</script>
+</html>
